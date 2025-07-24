@@ -1,0 +1,71 @@
+{
+  "version": "1.0.0",
+  "manual_version": "0.1.0",
+  "tools": [
+    {
+      "name": "embed_content",
+      "description": "Generate text embeddings for single or multiple inputs.",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "The model to use for generating the embeddings."
+          },
+          "contents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The text to embed."
+          },
+          "task_type": {
+            "type": "string",
+            "enum": [
+              "SEMANTIC_SIMILARITY",
+              "RETRIEVAL_QUERY",
+              "RETRIEVAL_DOCUMENT",
+              "CLASSIFICATION",
+              "CLUSTERING"
+            ],
+            "description": "The task type for the embedding."
+          },
+          "output_dimensionality": {
+            "type": "integer",
+            "description": "The desired dimensionality of the embedding."
+          }
+        },
+        "required": ["model", "contents"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "embeddings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "values": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tool_provider": {
+        "provider_type": "http",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/{model}:embedContent",
+        "http_method": "POST",
+        "auth": {
+          "auth_type": "api_key",
+          "api_key": "${GEMINI_API_KEY}",
+          "var_name": "x-goog-api-key"
+        }
+      }
+    }
+  ]
+}
